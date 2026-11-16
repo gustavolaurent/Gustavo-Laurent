@@ -2,6 +2,15 @@ import React,{useEffect,useState}from'react';
 import{createRoot}from'react-dom/client';
 import{Camera,Clock,Users,ShieldCheck,History,LogOut,RefreshCw,Home,AlertTriangle,Lock,MapPin}from'lucide-react';
 import'./style.css';
+// Limpia el parámetro de seguimiento que puede añadirse al abrir desde ChatGPT.
+if(typeof window!=='undefined'){
+ const url=new URL(window.location.href);
+ if(url.searchParams.get('utm_source')==='chatgpt.com'){
+  url.searchParams.delete('utm_source');
+  window.history.replaceState(window.history.state,'',url.pathname+url.search+url.hash);
+ }
+}
+
 type User={id:number;username:string;name:string;role:string;store?:string|null;advisor?:string|null};
 type Permission={can_view?:boolean;can_schedule?:boolean;can_validate?:boolean;can_export?:boolean;stores?:string[]};
 async function api(path:string,init:RequestInit={}){const r=await fetch(path,{...init,credentials:'same-origin',headers:{'Content-Type':'application/json',...(init.headers||{})}});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'No se pudo completar la solicitud.');return data;}
