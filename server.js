@@ -37,7 +37,8 @@ const readRoutes=new Set([
  "/api/attendance-permissions",
  "/api/attendance-employees",
  "/api/attendance",
- "/api/attendance-schedules"
+ "/api/attendance-schedules",
+ "/api/mobile/coverage"
 ]);
 app.get("/api/auth/session",async(req,res)=>{
  const token=req.cookies?.[cookieName]||parseCookies(req.headers.cookie)[cookieName];
