@@ -11,3 +11,25 @@ input{width:100%;padding:13px 14px;border:1px solid #dfe1e5;border-radius:10px;b
 table{border-collapse:collapse;width:100%;font-size:11px;white-space:nowrap}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #eff0f2}
 th{background:#f7f7f8;position:sticky;top:0;font-weight:800}
+
+
+.coverage-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #e8e9ec;border-radius:12px;padding:12px 14px;margin:14px 0 18px}
+.coverage-controls label{font-size:11px;font-weight:700;color:#4e5661}
+.coverage-controls input{width:145px;margin:0;padding:9px 10px}
+.coverage-controls span{font-size:11px;color:#707985}
+.coverage-controls .refresh{margin-left:auto}
+.coverage-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.coverage-stats .card{margin:0;padding:14px;border-radius:12px;min-width:0}
+.coverage-stats small{display:block;font-size:10px;line-height:1.4;min-height:28px}
+.coverage-stats b{display:block;font-size:23px;margin-top:6px}
+.coverage-updated{display:block;margin:10px 0;color:#717985;font-size:10px}
+.coverage-table-wrap{overflow-x:auto;background:#fff;border:1px solid #e8e9ec;border-radius:12px;margin:12px 0}
+.coverage-table{min-width:680px;font-size:11px;white-space:normal}
+.coverage-table th{color:#687386;font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+.coverage-table td{vertical-align:middle;line-height:1.5}
+.coverage-pill{display:inline-block;padding:5px 8px;border-radius:99px;font-size:9px;font-weight:800;white-space:nowrap}
+.coverage-pill.good{background:#dcfce7;color:#087443}
+.coverage-pill.partial{background:#fff1c2;color:#985600}
+.coverage-pill.bad{background:#fde8e9;color:#ae1d2d}
+.coverage-pill.pending{background:#e8eefb;color:#365b99}
+@media(max-width:600px){.coverage-controls{align-items:flex-start}.coverage-controls label{width:100%}.coverage-controls input{width:calc(50% - 6px)}.coverage-controls span{width:calc(50% - 6px);align-self:center}.coverage-controls .refresh{width:100%;justify-content:center;font-size:12px;margin:0}.coverage-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.coverage-stats .card{padding:12px}.coverage-stats b{font-size:21px}.coverage-table{min-width:620px}}
