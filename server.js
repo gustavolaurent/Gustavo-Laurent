@@ -7,7 +7,7 @@ const root=path.dirname(fileURLToPath(import.meta.url));
 const port=process.env.PORT||10000;
 const ERP_BASE=String(process.env.ERP_BASE_URL||"https://treinta-gestion-integral-sn9h.onrender.com").replace(/\/$/,"");
 app.disable("x-powered-by");
-app.use(express.json({limit:"32kb"}));
+app.use(express.json({limit:"8mb"}));
 app.use(express.static(path.join(root,"dist"),{index:false, maxAge:"1h"}));
 
 const cookieName="treinta_erp_session";
@@ -38,7 +38,7 @@ const readRoutes=new Set([
  "/api/attendance-employees",
  "/api/attendance",
  "/api/attendance-schedules",
- "/api/mobile/coverage"
+ "/api/mobile/coverage",\n "/api/mobile/me",\n "/api/mobile/marks",\n "/api/mobile/admin/links"
 ]);
 app.get("/api/auth/session",async(req,res)=>{
  const token=req.cookies?.[cookieName]||parseCookies(req.headers.cookie)[cookieName];
@@ -60,7 +60,7 @@ app.get("/api/erp/*",async(req,res)=>{
  try{
   const url=new URL(ERP_BASE+target);
   for(const [k,v] of Object.entries(req.query))if(typeof v==="string")url.searchParams.set(k,v);
-  const upstream=await fetch(url,{method:"GET",headers:{Authorization:"Bearer "+token,Accept:"application/json"},signal:AbortSignal.timeout(25000)});
+  const upstream=await fetch(url,{method:req.method,headers:{Authorization:"Bearer "+token,Accept:"application/json",...(req.method!=="GET"?{"Content-Type":"application/json"}:{})},...(req.method!=="GET"?{body:JSON.stringify(req.body||{})}:{}),signal:AbortSignal.timeout(25000)});
   const body=await upstream.text();
   res.status(upstream.status).set("Cache-Control","private, no-store").type(upstream.headers.get("content-type")||"application/json").send(body);
  }catch(e){console.error("erp-proxy",target,e.message);res.status(502).json({error:"No se pudo consultar TREINTA."});}
