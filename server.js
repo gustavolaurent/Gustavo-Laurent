@@ -52,9 +52,9 @@ app.get("/api/auth/session",async(req,res)=>{
 });
 function parseCookies(raw=""){return Object.fromEntries(raw.split(";").map(x=>x.trim()).filter(Boolean).map(x=>{const i=x.indexOf("=");return [decodeURIComponent(x.slice(0,i)),decodeURIComponent(x.slice(i+1))]}));}
 
-app.get("/api/erp/*",async(req,res)=>{
+app.all("/api/erp/*",async(req,res)=>{
  const target="/api/"+req.params[0];
- if(!readRoutes.has(target))return res.status(404).json({error:"Ruta no disponible desde la app móvil."});
+ const allowed=readRoutes.has(target)||(target==="/api/mobile/marks"&&["GET","POST"].includes(req.method))||(target==="/api/mobile/admin/links"&&req.method==="GET")||(/^\\/api\\/mobile\\/admin\\/links\\/\\d+$/.test(target)&&req.method==="PUT");\n if(!allowed)return res.status(404).json({error:"Ruta no disponible desde la app móvil."});
  const token=parseCookies(req.headers.cookie)[cookieName];
  if(!token)return res.status(401).json({error:"Inicia sesión nuevamente."});
  try{
