@@ -17,10 +17,10 @@ app.get("/api/health",(req,res)=>res.json({ok:true,service:"treinta-asistencia-m
 
 app.post("/api/auth/login",async(req,res)=>{
  try{
-  const username=String(req.body?.username||"").trim();
+  const dni=String(req.body?.dni||"").replace(/\D/g,"");
   const password=String(req.body?.password||"");
-  if(!username||!password)return res.status(400).json({error:"Ingresa usuario y contraseña."});
-  const upstream=await fetch(ERP_BASE+"/api/login",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({username,password}),signal:AbortSignal.timeout(15000)});
+  if(!/^\d{8}$/.test(dni)||!password)return res.status(400).json({error:"Ingresa tu DNI de 8 dígitos y contraseña."});
+  const upstream=await fetch(ERP_BASE+"/api/mobile/login",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({dni,password}),signal:AbortSignal.timeout(15000)});
   const data=await upstream.json().catch(()=>({}));
   if(!upstream.ok)return res.status(upstream.status===401?401:502).json({error:data.error||"No se pudo validar el acceso en TREINTA."});
   if(!data.token||!data.user)return res.status(502).json({error:"El ERP no devolvió una sesión válida."});
